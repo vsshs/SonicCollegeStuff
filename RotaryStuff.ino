@@ -81,7 +81,7 @@ void timer_isr()
 
 		if (tempo >=10 && tempo < 15) tempo_res = 16;
 
-		if (tempo >= 15 && tempo_res < 20) tempo_res = 32;
+		if (tempo >= 15 && tempo < 20) tempo_res = 32;
 
 		
 
