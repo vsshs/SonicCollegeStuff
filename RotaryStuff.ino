@@ -13,20 +13,20 @@
 #define R_CCW_NEXT 0x6
 
 const unsigned char ttable[7][4] = {
-  // R_START
-  {R_START,    R_CW_BEGIN,  R_CCW_BEGIN, R_START},
-  // R_CW_FINAL
-  {R_CW_NEXT,  R_START,     R_CW_FINAL,  R_START | DIR_CW},
-  // R_CW_BEGIN
-  {R_CW_NEXT,  R_CW_BEGIN,  R_START,     R_START},
-  // R_CW_NEXT
-  {R_CW_NEXT,  R_CW_BEGIN,  R_CW_FINAL,  R_START},
-  // R_CCW_BEGIN
-  {R_CCW_NEXT, R_START,     R_CCW_BEGIN, R_START},
-  // R_CCW_FINAL
-  {R_CCW_NEXT, R_CCW_FINAL, R_START,     R_START | DIR_CCW},
-  // R_CCW_NEXT
-  {R_CCW_NEXT, R_CCW_FINAL, R_CCW_BEGIN, R_START},
+	// R_START
+	{R_START,    R_CW_BEGIN,  R_CCW_BEGIN, R_START},
+	// R_CW_FINAL
+	{R_CW_NEXT,  R_START,     R_CW_FINAL,  R_START | DIR_CW},
+	// R_CW_BEGIN
+	{R_CW_NEXT,  R_CW_BEGIN,  R_START,     R_START},
+	// R_CW_NEXT
+	{R_CW_NEXT,  R_CW_BEGIN,  R_CW_FINAL,  R_START},
+	// R_CCW_BEGIN
+	{R_CCW_NEXT, R_START,     R_CCW_BEGIN, R_START},
+	// R_CCW_FINAL
+	{R_CCW_NEXT, R_CCW_FINAL, R_START,     R_START | DIR_CCW},
+	// R_CCW_NEXT
+	{R_CCW_NEXT, R_CCW_FINAL, R_CCW_BEGIN, R_START},
 };
 
 volatile unsigned char state1 = 0;
@@ -72,14 +72,20 @@ void timer_isr()
 		else 
 			tempo--;
 
-
-		if (tempo == 4) tempo_res = 4;
-		if (tempo == 9 ) tempo_res = 8;
-		if (tempo == 14) tempo_res = 16;
-		if (tempo == 19) tempo_res = 32;
-		
 		if (tempo > 19) tempo = 0;
 		if (tempo < 0) tempo = 19;
+
+		if (tempo >= 0 && tempo < 5) tempo_res = 4;
+
+		if (tempo >= 5 && tempo <10) tempo_res = 8;
+
+		if (tempo >=10 && tempo < 15) tempo_res = 16;
+
+		if (tempo >= 15 && tempo_res < 20) tempo_res = 32;
+
+		
+
+		
 	}
 
 	unsigned char result2 = rotary_process_2();
@@ -98,8 +104,8 @@ void timer_isr()
 
 	unsigned char result3 = rotary_process_3();
 	if (result3) {
-		
-		
+
+
 		if (result3 == DIR_CW)
 			speed+=50;
 		else
@@ -160,6 +166,6 @@ void setup() {
 
 
 void loop() {
-	
+
 }
 
